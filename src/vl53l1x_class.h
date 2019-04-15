@@ -43,7 +43,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "Arduino.h"
-#include "Wire.h"
+//#include "Wire.h"
+#include <i2c_t3.h> // for multiple i2c ports
 #include "RangeSensor.h"
 #include "vl53l1_error_codes.h"
 
@@ -118,7 +119,8 @@ typedef struct {
 typedef struct {
 
 	uint8_t   I2cDevAddr;
-	TwoWire *I2cHandle;
+	//TwoWire *I2cHandle;
+	i2c_t3	  *I2cHandle;
 
 } VL53L1_Dev_t;
 
@@ -136,7 +138,8 @@ class VL53L1X : public RangeSensor
      * @param[in] &pin_gpio1 pin Mbed InterruptIn PinName to be used as component GPIO_1 INT
      * @param[in] DevAddr device address, 0x52 by default
      */
-    VL53L1X(TwoWire *i2c, int pin, int pin_gpio1) : RangeSensor(), dev_i2c(i2c), gpio0(pin), gpio1Int(pin_gpio1)
+    //VL53L1X(TwoWire *i2c, int pin, int pin_gpio1) : RangeSensor(), dev_i2c(i2c), gpio0(pin), gpio1Int(pin_gpio1)
+    VL53L1X(i2c_t3 *i2c, int pin, int pin_gpio1) : RangeSensor(), dev_i2c(i2c), gpio0(pin), gpio1Int(pin_gpio1)
     {
        MyDevice.I2cDevAddr=VL53L1X_DEFAULT_DEVICE_ADDRESS;
        MyDevice.I2cHandle = i2c;
@@ -551,7 +554,8 @@ class VL53L1X : public RangeSensor
  protected:
 
     /* IO Device */
-    TwoWire *dev_i2c;
+    //TwoWire *dev_i2c;
+    i2c_t3 *dev_i2c;
     /* Digital out pin */
 	int gpio0;
 	int gpio1Int;
